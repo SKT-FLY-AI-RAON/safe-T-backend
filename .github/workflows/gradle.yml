@@ -24,19 +24,6 @@ jobs:
     - name: Set execute permission on gradlew
       run: chmod +x ./gradlew
 
-    - name: Create and substitute YAML file
-      run: |
-        mkdir -p src/main/resources
-        echo "spring:" > src/main/resources/application.yml
-        echo "  datasource:" >> src/main/resources/application.yml
-        echo "    url: ${DB_URL}" >> src/main/resources/application.yml
-        echo "    username: ${DB_USERNAME}" >> src/main/resources/application.yml
-        echo "    password: ${DB_PASSWORD}" >> src/main/resources/application.yml
-      env:
-        DB_URL: ${{ secrets.DB_URL }}
-        DB_USERNAME: ${{ secrets.DB_USERNAME }}
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-
     - name: Build with Gradle
       run: ./gradlew clean build -x test
 
@@ -85,8 +72,8 @@ jobs:
           # Pull Docker image
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
 
-          # Run new container with explicit name
-          sudo docker run -d -p 8080:8080 --name safe-t ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
+          # Run new container with explicit name and mount application.yml
+          sudo docker run -d -p 8080:8080 --name safe-t -v /home/ubuntu/application.yml:/config/application.yml ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
 
           # Check container logs for errors
           sudo docker logs safe-t
