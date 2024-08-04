@@ -73,7 +73,7 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
-        ssh -o StrictHostKeyChecking=no -i /homw/ubuntu/raon-key.pem ubuntu@${{ AWC_EC2_IP }} << 'EOF'
+        ssh -o StrictHostKeyChecking=no -i /homw/ubuntu/raon-key.pem ubuntu@${{ secrets.AWC_EC2_IP }} << 'EOF'
           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
           docker stop $(docker ps -q) 2>/dev/null || true
           docker run --name safe-t --rm -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
