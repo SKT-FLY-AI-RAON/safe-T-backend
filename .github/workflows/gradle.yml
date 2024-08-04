@@ -55,7 +55,7 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
-        ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@${{ secrets.AWS_EC2_IP }} << 'EOF'
+        ssh -o StrictHostKeyChecking=no -i key.pem ${{ secrets.AWS_EC2_IP }} << 'EOF'
           sudo usermod -aG docker $USER
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
           sudo docker stop $(sudo docker ps -q) 2>/dev/null || true
