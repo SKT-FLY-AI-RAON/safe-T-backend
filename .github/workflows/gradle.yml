@@ -28,7 +28,7 @@ jobs:
       run: ./gradlew clean build -x test
 
     - name: Build Docker image
-      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/safe-t .
+      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/safe-t:${{ github.sha }} .
 
     - name: Docker login
       uses: docker/login-action@v2
@@ -37,7 +37,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
     - name: Push Docker image to DockerHub
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/safe-t:${{ github.sha }}
 
   run-docker-image-on-ec2:
     needs: build-docker-image
@@ -56,18 +56,24 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
         ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@${{ secrets.AWS_EC2_IP }} << 'EOF'
-          # Ensure the Docker service is running and user is in the docker group
+          # Ensure Docker is installed and running
           sudo systemctl start docker
           sudo usermod -aG docker ubuntu
 
           # Pull Docker image
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
 
-          # Stop any running containers and remove them
-          sudo docker stop $(sudo docker ps -q) 2>/dev/null || true
+          # Stop any existing containers with the same name
+          sudo docker stop safe-t 2>/dev/null || true
 
-          # Run new container
+          # Remove any existing containers with the same name
+          sudo docker rm safe-t 2>/dev/null || true
+
+          # Run new container with explicit tag
           sudo docker run --name safe-t --rm -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
+
+          # Check container logs for errors
+          sudo docker logs safe-t
 
           # Clean up unused Docker images
           sudo docker system prune -f
