@@ -8,7 +8,6 @@ WORKDIR /app
 COPY build/libs/*.jar app.jar
 
 # Copy the application.yml configuration file into the container
-# Make sure to copy it to the correct location
 COPY application.yml /app/src/main/resources/application.yml
 
 # Run the application
