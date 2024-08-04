@@ -21,14 +21,14 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+    - name: Create application.yml from secret
+      run: echo "${{ secrets.APPLICATION_YAML }}" > application.yml
+      
     - name: Set execute permission on gradlew
       run: chmod +x ./gradlew
 
     - name: Build with Gradle
       run: ./gradlew clean build -x test
-
-    - name: Create application.yml from secret
-      run: echo "${{ secrets.APPLICATION_YAML }}" > application.yml
 
     - name: Build Docker image
       run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/safe-t .
