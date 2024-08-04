@@ -59,22 +59,25 @@ jobs:
           # Ensure Docker is installed and running
           sudo systemctl start docker
           sudo usermod -aG docker ubuntu
-  
+
+          # Ensure changes are applied (log out and log back in to apply group changes)
+          sudo su - ubuntu -c "exit"
+
           # Stop any existing containers with the same name
           sudo docker stop safe-t 2>/dev/null || true
-  
+
           # Remove any existing containers with the same name
           sudo docker rm safe-t 2>/dev/null || true
 
           # Pull Docker image
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
 
-          # Run new container with explicit tag
-          sudo docker run -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
-  
+          # Run new container with explicit name
+          sudo docker run -d -p 8080:8080 --name safe-t ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
+
           # Check container logs for errors
           sudo docker logs safe-t
-  
+
           # Clean up unused Docker images
           sudo docker system prune -f
         EOF
