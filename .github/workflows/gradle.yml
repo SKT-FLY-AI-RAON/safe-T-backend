@@ -24,15 +24,19 @@ jobs:
     - name: Set execute permission on gradlew
       run: chmod +x ./gradlew
 
-    - name: Set yaml file
-      uses: microsoft/variable-substitution@v1
-      with:
-        files: ${{ env.RESOURCE_PATH }}
+    - name: Create and substitute YAML file
+      run: |
+        mkdir -p src/main/resources
+        echo "spring:" > src/main/resources/application.yml
+        echo "  datasource:" >> src/main/resources/application.yml
+        echo "    url: ${DB_URL}" >> src/main/resources/application.yml
+        echo "    username: ${DB_USERNAME}" >> src/main/resources/application.yml
+        echo "    password: ${DB_PASSWORD}" >> src/main/resources/application.yml
       env:
-        spring.datasource.url: ${{ secrets.DB_URL }}
-        spring.datasource.username: ${{ secrets.DB_USERNAME }}
-        spring.datasource.password: ${{ secrets.DB_PASSWORD }}
-    
+        DB_URL: ${{ secrets.DB_URL }}
+        DB_USERNAME: ${{ secrets.DB_USERNAME }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
     - name: Build with Gradle
       run: ./gradlew clean build -x test
 
@@ -90,4 +94,3 @@ jobs:
           # Clean up unused Docker images
           sudo docker system prune -f
         EOF
-
