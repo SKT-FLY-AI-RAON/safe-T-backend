@@ -21,9 +21,6 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Create application.yml from secret
-      run: echo "${{ secrets.APPLICATION_YAML }}" > application.yml
-      
     - name: Set execute permission on gradlew
       run: chmod +x ./gradlew
 
@@ -31,7 +28,7 @@ jobs:
       run: ./gradlew clean build -x test
 
     - name: Build Docker image
-      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/safe-t .
+      run: docker build --build-arg APPLICATION_YAML="${{ secrets.APPLICATION_YAML }}" -t ${{ secrets.DOCKERHUB_USERNAME }}/safe-t .
 
     - name: Docker login
       uses: docker/login-action@v2
