@@ -27,6 +27,16 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew clean build -x test
 
+
+    - name: Set yaml file
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: ${{ env.RESOURCE_PATH }}
+      env:
+        spring.datasource.url: ${{secrets.DB_URL}}
+        spring.datasource.username: ${{secrets.DB_USERNAME}}
+        spring.datasource.password: ${{secrets.DB_PASSWORD}}
+
     - name: Build Docker image
       run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/safe-t .
 
