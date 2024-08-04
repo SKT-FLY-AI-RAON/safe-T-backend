@@ -60,15 +60,15 @@ jobs:
           sudo systemctl start docker
           sudo usermod -aG docker ubuntu
   
-          # Pull Docker image
-          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
-  
           # Stop any existing containers with the same name
           sudo docker stop safe-t 2>/dev/null || true
   
           # Remove any existing containers with the same name
           sudo docker rm safe-t 2>/dev/null || true
-  
+
+          # Pull Docker image
+          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
+
           # Run new container with explicit tag
           sudo docker run -d -p 8080:8080 --name safe-t ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
   
