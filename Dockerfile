@@ -8,7 +8,8 @@ WORKDIR /app
 COPY build/libs/*.jar app.jar
 
 # Copy the application.yml configuration file into the container
-COPY application.yml /config/application.yml
+# Make sure to copy it to the correct location
+COPY /home/ubuntu/application.yml /app/src/main/resources/application.yml
 
 # Run the application
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
