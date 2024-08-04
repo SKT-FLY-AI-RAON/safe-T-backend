@@ -7,6 +7,9 @@ WORKDIR /app
 # Copy the JAR file into the container
 COPY build/libs/*.jar app.jar
 
+# Create the necessary directory for application.yml
+RUN mkdir -p /app/src/main/resources
+
 # Define a build argument for application.yml content
 ARG APPLICATION_YAML
 
