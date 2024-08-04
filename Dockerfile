@@ -17,4 +17,4 @@ ARG APPLICATION_YAML
 RUN echo "$APPLICATION_YAML" > /app/src/main/resources/application.yml
 
 # Run the application
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
