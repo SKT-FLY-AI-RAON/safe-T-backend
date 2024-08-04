@@ -64,13 +64,13 @@ jobs:
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
 
           # Stop any existing containers with the same name
-          sudo docker stop safe-t 2>/dev/null || true
+          sudo docker stop ${{ secrets.DOCKERHUB_USERNAME }}/safe-t 2>/dev/null || true
 
           # Remove any existing containers with the same name
-          sudo docker rm safe-t 2>/dev/null || true
+          sudo docker rm ${{ secrets.DOCKERHUB_USERNAME }}/safe-t 2>/dev/null || true
 
           # Run new container with explicit tag
-          sudo docker run --name safe-t --rm -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
+          sudo docker run -it -d -p 8080:8080 --name ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
 
           # Check container logs for errors
           sudo docker logs safe-t
