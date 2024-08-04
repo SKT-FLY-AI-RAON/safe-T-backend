@@ -27,6 +27,9 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew clean build -x test
 
+    - name: Create application.yml from secret
+      run: echo "${{ secrets.APPLICATION_YAML }}" > application.yml
+
     - name: Build Docker image
       run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/safe-t .
 
@@ -72,8 +75,8 @@ jobs:
           # Pull Docker image
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
 
-          # Run new container with explicit name and mount application.yml
-          sudo docker run -d -p 8080:8080 --name safe-t -v /home/ubuntu/application.yml:/config/application.yml ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
+          # Run new container with explicit name
+          sudo docker run -d -p 8080:8080 --name safe-t ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
 
           # Check container logs for errors
           sudo docker logs safe-t
