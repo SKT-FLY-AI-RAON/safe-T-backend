@@ -1,16 +1,20 @@
-# Dockerfile
+# Use the official OpenJDK 17 base image
+FROM openjdk:17-jdk
 
-# jdk17 Image Start
-FROM openjdk:17
+# Set the working directory
+WORKDIR /app
 
-# 인자 설정 - JAR_File
-ARG JAR_FILE=build/libs/*.jar
+# Copy the JAR file into the container
+COPY build/libs/*.jar app.jar
 
-# jar 파일 복제
-COPY ${JAR_FILE} app.jar
+# Create the necessary directory for application.yml
+RUN mkdir -p /app/src/main/resources
 
-# 인자 설정 부분과 jar 파일 복제 부분 합쳐서 진행해도 무방
-#COPY build/libs/*.jar app.jar
+# Define a build argument for application.yml content
+ARG APPLICATION_YAML
 
-# 실행 명령어
+# Create the application.yml file from the build argument
+RUN echo "$APPLICATION_YAML" > /app/src/main/resources/application.yml
+
+# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
