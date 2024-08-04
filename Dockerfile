@@ -9,8 +9,8 @@ ARG JAR_FILE=build/libs/*.jar
 # jar 파일 복제
 COPY ${JAR_FILE} app.jar
 
-# 인자 설정 부분과 jar 파일 복제 부분 합쳐서 진행해도 무방
-#COPY build/libs/*.jar app.jar
+# 애플리케이션 설정 파일을 /config로 복사
+COPY application.yml src/main/resources/application.yml
 
-# 실행 명령어
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# 애플리케이션 실행
+ENTRYPOINT ["java", "-jar", "/app.jar"]
