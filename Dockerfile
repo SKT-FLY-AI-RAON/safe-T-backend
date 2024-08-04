@@ -7,8 +7,11 @@ WORKDIR /app
 # Copy the JAR file into the container
 COPY build/libs/*.jar app.jar
 
-# Copy the application.yml configuration file into the container
-COPY application.yml /app/src/main/resources/application.yml
+# Define a build argument for application.yml content
+ARG APPLICATION_YAML
+
+# Create the application.yml file from the build argument
+RUN echo "$APPLICATION_YAML" > /app/src/main/resources/application.yml
 
 # Run the application
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
