@@ -42,14 +42,14 @@ jobs:
   run-docker-image-on-ec2:
     needs: build-docker-image
     runs-on: ubuntu-latest
-
+  
     steps:
     - name: Install SSH client
       run: sudo apt-get install -y openssh-client
-
+  
     - name: Add SSH key
       run: echo "${{ secrets.EC2_SSH_KEY }}" > key.pem && chmod 600 key.pem
-
+  
     - name: SSH and Run Docker Commands on EC2
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -59,22 +59,23 @@ jobs:
           # Ensure Docker is installed and running
           sudo systemctl start docker
           sudo usermod -aG docker ubuntu
-
+  
           # Pull Docker image
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
-
+  
           # Stop any existing containers with the same name
-          sudo docker stop ${{ secrets.DOCKERHUB_USERNAME }}/safe-t 2>/dev/null || true
-
+          sudo docker stop safe-t 2>/dev/null || true
+  
           # Remove any existing containers with the same name
-          sudo docker rm ${{ secrets.DOCKERHUB_USERNAME }}/safe-t 2>/dev/null || true
-
+          sudo docker rm safe-t 2>/dev/null || true
+  
           # Run new container with explicit tag
-          sudo docker run -it -d -p 8080:8080 --name ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
-
+          sudo docker run -d -p 8080:8080 --name safe-t ${{ secrets.DOCKERHUB_USERNAME }}/safe-t
+  
           # Check container logs for errors
           sudo docker logs safe-t
-
+  
           # Clean up unused Docker images
           sudo docker system prune -f
         EOF
+
