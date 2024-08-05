@@ -1,6 +1,7 @@
 package com.flyai.safet.controller;
 
 
+import com.flyai.safet.entity.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @GetMapping("")
-    public String test(){
-        return "test";
+    public ApiResponse<String> test(){
+        return new ApiResponse<>("test");
     }
 }
