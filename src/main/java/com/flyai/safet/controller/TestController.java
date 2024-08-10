@@ -3,12 +3,12 @@ package com.flyai.safet.controller;
 
 import com.flyai.safet.entity.ApiResponse;
 import com.flyai.safet.exception.BadRequestException;
-import com.flyai.safet.test.Board;
-import com.flyai.safet.test.BoardRepository;
-import com.flyai.safet.test.BoardReq;
+import com.flyai.safet.service.S3Service;
+import com.flyai.safet.test.*;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,6 +18,8 @@ import java.util.List;
 public class TestController {
 
     private final BoardRepository boardRepository;
+    private final ImageRepository imageRepository;
+    private final S3Service s3Service;
 
     @GetMapping("")
     public ApiResponse<String> test(){
@@ -68,5 +70,23 @@ public class TestController {
 
         return new ApiResponse<>(id);
     }
+
+
+    @ApiOperation(value = "이미지 업로드", notes = "이미지 업로드")
+    @PostMapping("/image")
+    public ApiResponse<Image> uploadImage(@RequestPart(name = "images") MultipartFile multipartFile){
+
+        String url = s3Service.uploadImage("test", multipartFile.getOriginalFilename(), multipartFile);
+
+        Image image = Image.builder()
+                .url(url)
+                .build();
+
+        imageRepository.save(image);
+
+        return new ApiResponse<>(image);
+    }
+
+
 
 }
