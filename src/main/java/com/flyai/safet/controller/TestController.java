@@ -18,6 +18,8 @@ import java.util.List;
 public class TestController {
 
     private final BoardRepository boardRepository;
+    private final ImageRepository imageRepository;
+    private final S3Service s3Service;
 
     @GetMapping("")
     public ApiResponse<String> test(){
@@ -69,6 +71,21 @@ public class TestController {
         return new ApiResponse<>(id);
     }
 
+
+    @ApiOperation(value = "이미지 업로드", notes = "이미지 업로드")
+    @PostMapping("/image")
+    public ApiResponse<Image> uploadImage(@RequestPart(name = "images") MultipartFile multipartFile){
+
+        String url = s3Service.uploadImage("test", multipartFile.getOriginalFilename(), multipartFile);
+
+        Image image = Image.builder()
+                .url(url)
+                .build();
+
+        imageRepository.save(image);
+
+        return new ApiResponse<>(image);
+    }
 
 
 
