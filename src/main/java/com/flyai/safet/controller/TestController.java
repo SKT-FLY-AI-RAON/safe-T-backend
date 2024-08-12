@@ -3,12 +3,12 @@ package com.flyai.safet.controller;
 
 import com.flyai.safet.entity.ApiResponse;
 import com.flyai.safet.exception.BadRequestException;
-import com.flyai.safet.test.Board;
-import com.flyai.safet.test.BoardRepository;
-import com.flyai.safet.test.BoardReq;
+import com.flyai.safet.service.S3Service;
+import com.flyai.safet.test.*;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
