@@ -4,6 +4,7 @@ package com.flyai.safet.controller;
 import com.flyai.safet.entity.ApiResponse;
 import com.flyai.safet.exception.BadRequestException;
 import com.flyai.safet.service.S3Service;
+import com.flyai.safet.service.UdpService;
 import com.flyai.safet.test.*;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,8 @@ public class TestController {
     private final BoardRepository boardRepository;
     private final ImageRepository imageRepository;
     private final S3Service s3Service;
+    private final UdpService udpService;
+
 
     @GetMapping("")
     public ApiResponse<String> test(){
@@ -72,9 +75,9 @@ public class TestController {
     }
 
 
-    @ApiOperation(value = "이미지 업로드", notes = "이미지 업로드")
-    @PostMapping("/image")
-    public ApiResponse<Image> uploadImage(@RequestPart(name = "images") MultipartFile multipartFile){
+    @ApiOperation(value = "test 업로드", notes = "test 업로드")
+    @PostMapping("/test")
+    public ApiResponse<Image> uploadImageTest(@RequestPart(name = "images") MultipartFile multipartFile){
 
         String url = s3Service.uploadImage("test", multipartFile.getOriginalFilename(), multipartFile);
 
@@ -86,6 +89,88 @@ public class TestController {
 
         return new ApiResponse<>(image);
     }
+
+
+
+    @ApiOperation(value = "이미지 업로드", notes = "이미지 업로드")
+    @PostMapping("/image")
+    public ApiResponse<Image> uploadImage(@RequestPart(name = "images") MultipartFile multipartFile){
+
+        String url = s3Service.uploadImage("image", multipartFile.getOriginalFilename(), multipartFile);
+
+        Image image = Image.builder()
+                .url(url)
+                .build();
+
+        imageRepository.save(image);
+
+        return new ApiResponse<>(image);
+    }
+
+
+
+
+    @ApiOperation(value = "파일 업로드", notes = "파일 업로드")
+    @PostMapping("/file")
+    public ApiResponse<Image> uploadFile(@RequestPart(name = "files") MultipartFile multipartFile){
+
+        String url = s3Service.uploadImage("file", multipartFile.getOriginalFilename(), multipartFile);
+
+        Image image = Image.builder()
+                .url(url)
+                .build();
+
+        imageRepository.save(image);
+
+        return new ApiResponse<>(image);
+    }
+
+
+    @ApiOperation(value = "비디오 업로드", notes = "비디오 업로드")
+    @PostMapping("/video")
+    public ApiResponse<Image> uploadVideo(@RequestPart(name = "videos") MultipartFile multipartFile){
+
+        String url = s3Service.uploadImage("video", multipartFile.getOriginalFilename(), multipartFile);
+
+        Image image = Image.builder()
+                .url(url)
+                .build();
+
+        imageRepository.save(image);
+
+        return new ApiResponse<>(image);
+    }
+
+
+
+
+
+
+
+
+
+
+    @PostMapping("/sendVideo")
+    public String uploadVideo(@RequestPart(name = "file") MultipartFile file,
+                              @RequestParam String serverAddress,
+                              @RequestParam int port) {
+        try {
+            udpService.sendVideo(file, serverAddress, port);
+            return "Video sent successfully";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Failed to send video: " + e.getMessage();
+        }
+    }
+//    public String sendVideo(@RequestParam String filePath, @RequestParam String serverAddress, @RequestParam int port) {
+//        try {
+//            udpService.sendVideo(filePath, serverAddress, port);
+//            return "Video sent successfully";
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return "Failed to send video: " + e.getMessage();
+//        }
+//    }
 
 
 
