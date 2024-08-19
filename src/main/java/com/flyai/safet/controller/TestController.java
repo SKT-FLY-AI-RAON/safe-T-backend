@@ -21,7 +21,7 @@ public class TestController {
     private final BoardRepository boardRepository;
     private final ImageRepository imageRepository;
     private final S3Service s3Service;
-    private final UdpService udpService;
+
 
 
     @GetMapping("")
@@ -149,19 +149,19 @@ public class TestController {
 
 
 
-
-    @PostMapping("/sendVideo")
-    public String uploadVideo(@RequestPart(name = "file") MultipartFile file,
-                              @RequestParam String serverAddress,
-                              @RequestParam int port) {
-        try {
-            udpService.sendVideo(file, serverAddress, port);
-            return "Video sent successfully";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Failed to send video: " + e.getMessage();
-        }
-    }
+//
+//    @PostMapping("/sendVideo")
+//    public String uploadVideo(@RequestPart(name = "file") MultipartFile file,
+//                              @RequestParam String serverAddress,
+//                              @RequestParam int port) {
+//        try {
+//            udpService.sendVideo(file, serverAddress, port);
+//            return "Video sent successfully";
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return "Failed to send video: " + e.getMessage();
+//        }
+//    }
 //    public String sendVideo(@RequestParam String filePath, @RequestParam String serverAddress, @RequestParam int port) {
 //        try {
 //            udpService.sendVideo(filePath, serverAddress, port);
