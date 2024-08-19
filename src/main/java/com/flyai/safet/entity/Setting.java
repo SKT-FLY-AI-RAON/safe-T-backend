@@ -21,7 +21,7 @@ public class Setting {
     private User user;
 
     @Column(name = "warning_option")
-    @ColumnDefault("video_option") // true:영상 띄우기, false: 소리로만 경고
+    @ColumnDefault("1") // true:영상 띄우기, false: 소리로만 경고
     private Boolean video_option;
 
     @Builder
