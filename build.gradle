@@ -44,6 +44,12 @@ dependencies {
 	//  AWS
 	implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.3.5'
 
+	// Spring WebSocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+	//JsonObject
+	implementation 'org.json:json:20230227'
+
 }
 
 tasks.named('test') {
