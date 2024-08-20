@@ -4,15 +4,18 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.*;
 
-@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Getter
-@Table(name = "users")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@Entity
+@Table(name = "`user`")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "users_id")
+//    @Column(name = "users_id")
     private Long id;
 
     @Column(name = "username", length = 50)
@@ -36,8 +39,4 @@ public class User {
     @Column(name = "password", length = 100)
     private String password;
 
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
 }

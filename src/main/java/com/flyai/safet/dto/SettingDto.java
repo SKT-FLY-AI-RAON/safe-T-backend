@@ -16,10 +16,10 @@ public class SettingDto {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+//    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class SettingRequestDto {
         private Long userId;
-        private boolean videoOption;
+        private int warningOption; //1, 2
     }
 }

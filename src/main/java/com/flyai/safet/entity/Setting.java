@@ -5,10 +5,13 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
-@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Getter
-@Table(name = "settings")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@Entity
+@Table(name = "setting")
 public class Setting {
 
     @Id
@@ -21,12 +24,8 @@ public class Setting {
     private User user;
 
     @Column(name = "warning_option")
-    @ColumnDefault("1") // true:영상 띄우기, false: 소리로만 경고
-    private Boolean video_option;
+    @ColumnDefault("1") // 1:영상 띄우기, 2: 영상 없음
+    private int warningOption;
 
-    @Builder
-    public Setting(User user, Boolean video_option) {
-        this.user = user;
-        this.video_option = video_option;
-    }
+
 }
