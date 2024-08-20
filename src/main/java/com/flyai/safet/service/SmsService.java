@@ -51,11 +51,11 @@ public class SmsService {
         message.setFrom(senderNumber);  // 발신자 번호
         message.setTo(emergencyNumber); // 수신자 번호 (112)
         message.setText(
-                "급발진 의심 상황 발생\n" +
+                "급발진 의심 상황 발생\n" + "\n" +
                         "위치: " + locationInfo + "\n" +
                         "위도: " + latitude + ", 경도: " + longitude + "\n" +
                         "차량 정보: " + user.getVehicleType() + "/" + user.getVehicleNumber() + "\n" +
-                        "사용자 정보: " + user.getAge() + "세 "+ user.getGender() + user.getUsername() + "\n" +
+                        "사용자 정보: " + user.getAge() + "세, "+ user.getGender() + ", "+ user.getName() + "\n" + "\n" +
                         "속도가 비정상적으로 올라가고 있습니다.\n" +
                         "긴급 조치가 필요합니다."
         );
