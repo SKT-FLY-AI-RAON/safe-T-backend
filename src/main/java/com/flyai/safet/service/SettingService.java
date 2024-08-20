@@ -22,7 +22,10 @@ public class SettingService {
                 () -> new NotFoundException("존재하지 않은 사용자입니다.")
         );
 
-        Setting setting = Setting.builder().user(user).video_option(requestDto.isVideoOption()).build();
+        Setting setting = settingRepository.findByUser(user).orElseThrow(  () -> new NotFoundException("존재하지 않은 설정값입니다."));
+
+        setting.setWarningOption(requestDto.getWarningOption());
+
         settingRepository.save(setting);
 
     }

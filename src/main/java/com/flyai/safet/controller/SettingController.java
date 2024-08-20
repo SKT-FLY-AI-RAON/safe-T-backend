@@ -14,7 +14,7 @@ public class SettingController {
     private final SettingService settingService;
 
 
-    @PostMapping("/")
+    @PatchMapping("")
     public ApiResponse<String> saveSetting(@RequestBody SettingDto.SettingRequestDto requestDto) {
         settingService.saveSetting(requestDto);
         return new ApiResponse<>("설정이 성공적으로 수행되었습니다.");
