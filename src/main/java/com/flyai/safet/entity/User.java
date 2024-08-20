@@ -18,6 +18,9 @@ public class User {
     @Column(name = "username", length = 50)
     private String username;
 
+    @Column(name = "name", length = 50)
+    private String name;
+
     @Column(name = "age", length = 50)
     private String age;
 
