@@ -29,4 +29,14 @@ public class SettingService {
         settingRepository.save(setting);
 
     }
+
+    public Setting getSetting(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new NotFoundException("존재하지 않은 사용자입니다.")
+        );
+
+        Setting setting = settingRepository.findByUser(user).orElseThrow(  () -> new NotFoundException("존재하지 않은 설정값입니다."));
+
+        return setting;
+    }
 }
