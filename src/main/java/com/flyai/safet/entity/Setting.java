@@ -27,5 +27,9 @@ public class Setting {
     @ColumnDefault("1") // 1:영상 띄우기, 2: 영상 없음
     private int warningOption;
 
+    @Column(name = "agreement")
+    @ColumnDefault("false")
+    private boolean agreement;
+
 
 }

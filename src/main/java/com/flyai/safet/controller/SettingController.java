@@ -16,14 +16,24 @@ public class SettingController {
 
 
     @GetMapping("")
-    public ApiResponse<Setting> getSetting(@RequestParam Long userId) {
+    public ApiResponse<SettingDto.SettingResponseDto> getSetting(@RequestParam Long userId) {
         Setting setting = settingService.getSetting(userId);
-        return new ApiResponse<>(setting);
+        SettingDto.SettingResponseDto settingDto = SettingDto.SettingResponseDto.builder()
+                .warningOption(setting.getWarningOption())
+                .agreement(setting.isAgreement())
+                .build();
+        return new ApiResponse<>(settingDto);
     }
 
     @PatchMapping("")
     public ApiResponse<String> saveSetting(@RequestBody SettingDto.SettingRequestDto requestDto) {
         settingService.saveSetting(requestDto);
         return new ApiResponse<>("설정이 성공적으로 수행되었습니다.");
+    }
+
+    @PatchMapping("/agreement")
+    public ApiResponse<String> saveAgreement(@RequestBody SettingDto.AgreementRequestDto requestDto) {
+        settingService.saveAgreement(requestDto);
+        return new ApiResponse<>("개인정보 동의 설정이 완료되었습니다.");
     }
 }
