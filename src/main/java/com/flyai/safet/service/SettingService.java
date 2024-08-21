@@ -30,6 +30,7 @@ public class SettingService {
 
     }
 
+    @Transactional
     public Setting getSetting(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new NotFoundException("존재하지 않은 사용자입니다.")
@@ -38,5 +39,17 @@ public class SettingService {
         Setting setting = settingRepository.findByUser(user).orElseThrow(  () -> new NotFoundException("존재하지 않은 설정값입니다."));
 
         return setting;
+    }
+
+    @Transactional
+    public void saveAgreement(SettingDto.AgreementRequestDto requestDto){
+        User user = userRepository.findById(requestDto.getUserId()).orElseThrow(
+                () -> new NotFoundException("존재하지 않은 사용자입니다.")
+        );
+
+        Setting setting = settingRepository.findByUser(user).orElseThrow(() -> new NotFoundException("존재하지 않은 설정값입니다."));
+        setting.setAgreement(requestDto.isAgreement());
+        settingRepository.save(setting);
+
     }
 }
